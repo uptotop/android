@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name ="shareArray">
+        <item >REST</item>
+        <item >Facebook</item>
+        <item >Twitter</item>
+        <item >VKontakte</item>
+        <item >--------</item>
+        <item >May be late ...</item>
+    </string-array>
+    
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+     android:gravity="bottom|center"
+    >
+    <LinearLayout
+            android:id="@+id/layoutBtnId"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:background="@drawable/bottom"
+            android:orientation="horizontal"
+            >
+            
+             <ImageButton
+                android:id="@+id/btnPreviewId"
+                android:paddingBottom="10sp"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/btn_send"
+                android:layout_weight="0.3"
+                android:background="@android:color/transparent"/>
+
+            <ImageButton
+                android:id="@+id/btnTakeId"
+                android:paddingTop="10sp"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/btn_take"
+                android:layout_weight="0.4"
+                android:src="@drawable/take"
+                android:background="@android:color/transparent" />
+            
+            <ImageButton
+                android:id="@+id/btnCloseId"
+                android:paddingTop="15sp"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/btn_end"
+                android:layout_weight="0.3"
+                android:src="@drawable/close"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+</RelativeLayout>
