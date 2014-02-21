@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">UpToTop</string>
+    <string name="user_config">Мои данные</string>
+    
+	<string name="btn_start">Старт</string>
+	<string name="btn_end">Стоп</string>
+	<string name="btn_take">Захват</string>
+	<string name="btn_submit">Подтвердить</string>
+	
+	<string name="image_capture">Фото получено</string>
+	<string name="price">Цена:</string>
+	<string name="name">Наименование:</string>
+	<string name="description">Описание:</string>
+	<string name="send">Отправить</string>
+	<string name="cancel">Отменить</string>
+	<string name="share_btn">Share</string>
+	<string name="share_to">Share To</string>
+	<string name="file_not_found">Файл не найден: </string>
+	<string name="file_accsess_error">Ошибка доступа к файлу</string>
+	<string name="create_obj">Создание цели</string>
+	<string name="user_name">Ваше Имя:</string>
+	<string name="old_password">Предыдущий пароль:</string>
+	<string name="new_password">Новый Пароль:</string>
+	<string name="confirm_password">Подтвердите пароль:</string>
+	<string name="password">Пароль:</string>
+	<string name="location">Местоположение:</string>
+	<string name="success">Успешно</string>
+	
+	<string name="loginLenShort">Имя: Введите не менее 4-х символов</string>
+	<string name="passwordLenShort">Пароль: Введите не менее 6-х символов</string>
+	<string name="passwordNotEqual">Пароль: Не совпадает</string>
+	<string name="wrongPassword">Вы ввели не правильный пароль</string>
+	<string name="remember_me">Запомнить меня</string>
+	
+	
+	<string name="btn_send">Отправить</string>
+	<string name="btn_save">Сохранить</string>
+	<string name="btn_cancel">Отменить</string>
+	
+	<string name="msg_req">Обязательное поле [</string>
+	<string name="msg_empty">] не заполнено.</string>
+	
+	<string name="base_uri">http://bazzilla.com/restapi/create</string>
+	<string name="action_view_objective">Мои цели</string>
+	<string name="action_user_profile">Профиль пользователя</string>
+	
+	<string name="welcome">Авторизация</string>
+	<string name="fieldEmpty">Заполните обязательное поле</string>
+	
+</resources>

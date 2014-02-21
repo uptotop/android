@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/allfons_1"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:layout_marginTop="0dp"
+        android:gravity="center|center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:src="@drawable/login_png" >
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical" >
+
+
+        <TextView
+            style="@style/.labels"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/user_name" />
+
+        <EditText
+            style="@style/.edit_txt"
+            android:id="@+id/enterLoginId"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:inputType="text" />
+
+        <TextView
+            style="@style/.labels"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="@string/password" />
+
+        <EditText
+            android:id="@+id/enterPasswordId"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:inputType="textPassword">
+            <requestFocus />
+        </EditText> 
+
+        <CheckBox
+            style="@style/.labels"
+            android:id="@+id/showCheckBoxId"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:checked="true"
+            android:text="@string/remember_me" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <Button
+                style="@style/.labels"
+                android:id="@+id/btnLoginId"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border_shape"
+                android:gravity="center_horizontal"
+                android:paddingTop="2dp"
+                android:text="@string/btn_submit" />
+
+            <Button
+                style="@style/.labels"
+                android:id="@+id/btnCancelLoginId"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border_shape_dis"
+                android:gravity="center_horizontal"
+                android:paddingTop="2dp"
+                android:text="@string/btn_cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</LinearLayout>

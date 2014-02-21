@@ -1,18 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutPreviewId"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/allfons_1"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#000000"
-     >
-    <ViewFlipper
-        android:id="@+id/gallery"
-        android:layout_width="match_parent"
+    android:padding="@dimen/preview_padding" >
+
+    <TextView
+        style="@style/.labels_bold"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:text="@string/create_obj" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-         />
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal" />
+
+        <ImageView
+            android:id="@+id/previewImageId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="0.5"
+            android:adjustViewBounds="true" >
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="170dp"
+        android:orientation="vertical">
+    <TextView
+        style="@style/.labels"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:focusable="true"
+        android:text="@string/name" />
+
+    <EditText
+        android:id="@+id/objNameId"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:inputType="text"
+        />
+
+    <TextView
+        style="@style/.labels"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="@string/description" />
+
+    <EditText
+        android:id="@+id/objDescriptionId"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp" 
+        android:inputType="text"
+        />
+
+    <TextView
+        style="@style/.labels"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="@string/price" />
+
+    <EditText
+        android:id="@+id/objPriceId"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:inputType="numberDecimal" 
+        />
+     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            style="@style/.labels"
+            android:id="@+id/sendId"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_shape"
+            android:gravity="center_horizontal"
+            android:paddingTop="3dp"
+            android:text="@string/btn_send" />
+        
+         <Button
+            style="@style/.labels"
+            android:id="@+id/cancelId"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_shape_dis"
+            android:gravity="center_horizontal"
+            android:paddingTop="3dp"
+            android:text="@string/btn_cancel" />
+    </LinearLayout>
+
 </LinearLayout>

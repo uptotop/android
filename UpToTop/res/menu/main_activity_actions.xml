@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <!-- More -->
+    <item
+        android:id="@+id/a_More"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="always"
+        android:background="@android:color/transparent"
+       >
+        <menu>
+            <item
+                android:id="@+id/action_config"
+                android:orderInCategory="1"
+                android:showAsAction="always"
+                android:title="@string/user_config"
+               />
+            <item
+                android:id="@+id/action_view_objectives"
+                android:orderInCategory="2"
+                android:showAsAction="always"
+                android:title="@string/action_view_objective"
+               />
+            <item
+                android:id="@+id/action_user_profile"
+                android:orderInCategory="3"
+                android:showAsAction="always"
+                android:title="@string/action_user_profile"
+               />
+        </menu>
+    </item>
+
+</menu>

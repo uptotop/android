@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/btn_take"
                 android:layout_weight="0.4"
-                android:src="@drawable/take"
+                android:src="@drawable/take_dis"
                 android:background="@android:color/transparent" />
             
             <ImageButton

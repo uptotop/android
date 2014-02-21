@@ -9,18 +9,20 @@ import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -30,13 +32,15 @@ import android.widget.Toast;
 
 import com.project.uptotop.AppConstants;
 import com.project.uptotop.R;
-import com.project.uptotop.utils.AppUtils;
+import com.project.uptotop.dao.UpToTopDBHelper;
 import com.project.uptotop.utils.BitmapWarehouse;
 
-public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener, AppConstants{
+public class UpToTopMainActivity extends BaseActivity implements SurfaceHolder.Callback, View.OnClickListener, AppConstants{
 	
 	@SuppressLint("SimpleDateFormat")
 	final SimpleDateFormat FORMAT= new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+	
+	private static final int ACTION_LOGIN = 203;
 	
 	private static BitmapWarehouse BMP_WRH = BitmapWarehouse.getInstance();
 	
@@ -44,8 +48,7 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 	private final String LANDSCAPE = "landscape";
 
 	public static final String ABS_PATH ="path";
-	
-	private static final Integer ACTION_TRANSFER=101;
+	public static final String DPI ="densityDPI";
 	
 	private ImageButton btnPreview;
 	private ImageButton btnTake;
@@ -60,9 +63,11 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 	
 	private Camera camera;
 	
-	private byte[] imageInByte;
 	private String imagePath;
 	
+	private Integer densityDPI;
+	
+	private SQLiteDatabase dataBase;	
 	
 	private ShutterCallback shutter;
 	private PictureCallback rawPicture;
@@ -108,15 +113,10 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 		            Log.d("MyCameraApp", R.string.file_accsess_error + e.getMessage());
 		        }
 		        data = null;
-		        
-				Bitmap scaledBitmap = AppUtils.decodeScaledBitmapFromSdCard( imagePath,70,50 );
-				
-				BMP_WRH.setBmp( scaledBitmap );
+		        DisplayMetrics metrics = getResources().getDisplayMetrics();
+				densityDPI = metrics.densityDpi;
 				BMP_WRH.setImgPath( imagePath );
-				setThumbnail( scaledBitmap ) ;
-				btnPreview.setEnabled( true );
-				stopCamera();
-				startCamera();
+				viewCreateObjActivity();
 			}
 		};
 		
@@ -125,8 +125,12 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 			public void onAutoFocus(boolean success, Camera camera) {
 				if ( success ){
 					btnFocus.setImageResource( R.drawable.take_focus );
+					btnTake.setImageResource( R.drawable.take);
+					btnTake.setEnabled( true );
 				} else {
 					btnFocus.setImageResource( R.drawable.lost_focus );
+					btnTake.setImageResource( R.drawable.take_dis);
+					btnTake.setEnabled( false );
 				}
 			}
 		};
@@ -136,23 +140,34 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.main);
-		
+		createDB();
+		if ( userCursor.getCount() > 0 && getUser().isShowStartup() ){
+			showLoginForm();
+		}
+		File tmbDir = new File (TMB_DIR);
+		if ( !tmbDir.exists() ){
+			tmbDir.mkdir();
+		}
 		this.srfView = ( SurfaceView ) findViewById( R.id.surfaceViewId );
 		this.srfHolder = srfView.getHolder();
 		srfHolder.addCallback( this );
-		srfHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS );
 		
 		mainInflanter = LayoutInflater.from( getBaseContext() );
-		mainParams = new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
-		
+		mainParams = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
 		initButtons();
-
-		if ( BMP_WRH.getBmp() != null ){
-			setThumbnail( BMP_WRH.getBmp() );
-			imagePath = BMP_WRH.getImgPath();
-			btnPreview.setEnabled( true );
+		
+		setFinishOnTouchOutside (false); 
+		
+	}
+	
+	private void createDB(){
+		dataBase = new UpToTopDBHelper( getApplicationContext() ).getWritableDatabase() ;
+		if ( dataBase != null ){
+			//Toast.makeText(getApplicationContext(),"DataBase created", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(getApplicationContext(),"DataBase created error", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -165,6 +180,7 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 		btnTake = ( ImageButton ) overlay.findViewById( R.id.btnTakeId );
 		btnClose = ( ImageButton ) overlay.findViewById( R.id.btnCloseId );
 		btnFocus  = (ImageButton ) overlayFcsBtn.findViewById( R.id.btnFocusId );
+		btnTake.setEnabled( false );
 		
 		btnPreview.setOnClickListener( this );
 		btnTake.setOnClickListener( this );
@@ -182,9 +198,24 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.preview_main, menu);
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected( MenuItem item){
+		switch ( item.getItemId() ){
+			case R.id.action_config :
+				viewUserConfigActivity();
+				break;
+			default : 
+				return false;
+		}
 		return true;
 	}
+	
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -199,11 +230,6 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		
-	}
-	
-	private void setThumbnail(Bitmap bmp ){
-		Bitmap borderedBmp = AppUtils.addWhiteBorder( bmp , 2);
-		btnPreview.setImageBitmap( AppUtils.rotateBitmap(borderedBmp, 90) );
 	}
 	
 	private void stopCamera(){
@@ -232,6 +258,48 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
+	
+	private void viewCreateObjActivity(){
+		stopCamera();
+		
+		final Intent intent = new Intent();
+		intent.putExtra(ABS_PATH, imagePath);
+		intent.setClass(this, CreateObjectiveActivity.class );
+		btnTake.setImageResource( R.drawable.take_dis);
+		btnTake.setEnabled( false );
+		startActivity(intent);
+	}
+	
+	private void showLoginForm(){
+		final Intent intent = new Intent();
+		intent.setClass(this, LoginActivity.class );
+		startActivityForResult(intent, ACTION_LOGIN );
+	}
+	
+	protected void onActivityResult(int request, int result, Intent data){
+		super.onActivityResult( request, result, data);
+		if ( result == RESULT_OK ){
+			return;
+		} else if ( result == RESULT_CANCELED ){
+			System.exit( 0 );
+		}
+	}
+	
+	private void viewUserConfigActivity(){
+		stopCamera();
+		
+		btnTake.setImageResource( R.drawable.take_dis);
+		btnTake.setEnabled( false );
+		final Intent intent = new Intent();
+		intent.putExtra( DPI, densityDPI );
+		intent.setClass(this, UserProfileActivity.class );
+		startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
 	@Override
 	public void onClick(View btn) {
@@ -242,14 +310,6 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 			//Toast.makeText(this, R.string.image_capture, Toast.LENGTH_LONG).show();
 			break;
 		}
-		case R.id.btnPreviewId :{
-			stopCamera();
-			Intent intent = new Intent();
-			intent.putExtra(ABS_PATH, imagePath);
-		//	intent.setClass(this, RealPreviewActivity.class );
-			startActivityForResult(intent, ACTION_TRANSFER);
-			break;
-		}
 		case R.id.btnCloseId : {
 			stopCamera();
 			this.finish();
@@ -257,5 +317,6 @@ public class UpToTopMainActivity extends Activity implements SurfaceHolder.Callb
 		}
 		}
 	}
-		
-	}
+	
+	
+}
