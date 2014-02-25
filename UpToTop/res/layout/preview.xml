@@ -52,9 +52,11 @@
         android:text="@string/name" />
 
     <EditText
+         style="@style/.edit_txt"
         android:id="@+id/objNameId"
         android:layout_width="fill_parent"
         android:layout_height="35dp"
+        android:imeOptions="actionNext"
         android:inputType="text"
         />
 
@@ -65,9 +67,11 @@
         android:text="@string/description" />
 
     <EditText
+        style="@style/.edit_txt"
         android:id="@+id/objDescriptionId"
         android:layout_width="fill_parent"
         android:layout_height="35dp" 
+        android:imeOptions="actionNext"
         android:inputType="text"
         />
 
@@ -78,10 +82,12 @@
         android:text="@string/price" />
 
     <EditText
+        style="@style/.edit_txt"
         android:id="@+id/objPriceId"
         android:layout_width="fill_parent"
         android:layout_height="35dp"
-        android:inputType="numberDecimal" 
+        android:inputType="numberDecimal"
+        android:imeOptions="actionDone" 
         />
      </LinearLayout>
     <LinearLayout

@@ -7,6 +7,7 @@
 	<string name="btn_start">Start</string>
 	<string name="btn_end">End</string>
 	<string name="btn_take">Take</string>
+	<string name="btn_up">Up</string>
 	
 	<string name="image_capture">Image capture</string>
 	<string name="price">Price</string>
@@ -60,6 +61,10 @@
 	
 	<string name="welcome">Authorization</string>
 	<string name="fieldEmpty">Requiired field is empty</string>
+	
+	<string name="objective_status">On moderation</string>
+	
+	<string name="my_objectives">My objectives (Balance: $20.00)</string>
 	 
 	
 </resources>

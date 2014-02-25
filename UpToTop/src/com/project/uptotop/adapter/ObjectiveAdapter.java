@@ -46,7 +46,7 @@ public class ObjectiveAdapter extends BaseAdapter{
 
 	@Override
 	public long getItemId( int idx ) {
-		Long id = Long.getLong( objectives.get( idx ).getObjId() );
+		Long id = Long.getLong( objectives.get( idx ).getObjId().toString() );
 		return id;
 	}
 
@@ -55,14 +55,23 @@ public class ObjectiveAdapter extends BaseAdapter{
 		View view = inflater.inflate(R.layout.obj_row, null);
 		ImageView image = (ImageView) view.findViewById(R.id.listIconId);
 		Bitmap decodedBmp = AppUtils.decodeScaledBitmapFromSdCard(objectives.get( idx ).getImagePath(),
-				90, 100, 300);
+				80, 90, 320);
 		Bitmap scaledBmp = AppUtils.rotateBitmap(decodedBmp, 90);
-		Bitmap highLight = AppUtils.highlightImage(scaledBmp, 10);
-		Bitmap rotBmp = AppUtils.roundCornerImage(highLight, 40);
+		Bitmap rotBmp = AppUtils.roundCornerImage(scaledBmp, 5);
 		image.setImageBitmap(rotBmp);
 		
-		TextView txtView = (TextView) view.findViewById(R.id.objectiveTextId);
-		txtView.setText( objectives.get( idx ).getDescription() );
+		TextView txtName = (TextView) view.findViewById(R.id.objectiveNameId);
+		txtName.setText( objectives.get( idx ).getName() );
+		
+		TextView txtDesc = (TextView) view.findViewById(R.id.objectiveDescId);
+		txtDesc.setText( objectives.get( idx ).getDescription() );
+		
+		TextView txtPrice = (TextView) view.findViewById(R.id.objectivePriceId);
+		txtPrice.setText( objectives.get( idx ).getPrice().toString() );
+		
+		TextView txtStatus = (TextView) view.findViewById(R.id.objectiveStatusId);
+		txtStatus.setText( R.string.objective_status );
+		
 		return view;
 	}
 	

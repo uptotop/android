@@ -8,6 +8,7 @@
 	<string name="btn_end">Стоп</string>
 	<string name="btn_take">Захват</string>
 	<string name="btn_submit">Подтвердить</string>
+	<string name="btn_up">Up</string>
 	
 	<string name="image_capture">Фото получено</string>
 	<string name="price">Цена:</string>
@@ -48,5 +49,9 @@
 	
 	<string name="welcome">Авторизация</string>
 	<string name="fieldEmpty">Заполните обязательное поле</string>
+	
+	<string name="objective_status">На модерации</string>
+	
+	<string name="my_objectives">Мои цели (Баланс: $20.00)</string>
 	
 </resources>

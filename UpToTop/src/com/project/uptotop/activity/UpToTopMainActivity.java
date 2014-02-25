@@ -131,6 +131,8 @@ public class UpToTopMainActivity extends BaseActivity implements SurfaceHolder.C
 					btnFocus.setImageResource( R.drawable.lost_focus );
 					btnTake.setImageResource( R.drawable.take_dis);
 					btnTake.setEnabled( false );
+					stopCamera();
+					startCamera();
 				}
 			}
 		};
@@ -210,6 +212,9 @@ public class UpToTopMainActivity extends BaseActivity implements SurfaceHolder.C
 			case R.id.action_config :
 				viewUserConfigActivity();
 				break;
+			case R.id.action_view_objectives :
+				viewMyObjectivesActivity();
+				break;
 			default : 
 				return false;
 		}
@@ -287,12 +292,20 @@ public class UpToTopMainActivity extends BaseActivity implements SurfaceHolder.C
 	
 	private void viewUserConfigActivity(){
 		stopCamera();
-		
 		btnTake.setImageResource( R.drawable.take_dis);
 		btnTake.setEnabled( false );
 		final Intent intent = new Intent();
 		intent.putExtra( DPI, densityDPI );
 		intent.setClass(this, UserProfileActivity.class );
+		startActivity(intent);
+	}
+	
+	private void viewMyObjectivesActivity(){
+		stopCamera();
+		btnTake.setImageResource( R.drawable.take_dis);
+		btnTake.setEnabled( false );
+		final Intent intent = new Intent();
+		intent.setClass(this, ViewMyObjectiveActivity.class );
 		startActivity(intent);
 	}
 	

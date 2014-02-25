@@ -10,16 +10,16 @@ package com.project.uptotop.model;
  */
 public class ObjectiveModel {
 	
-	private String objId;
+	private Integer objId;
 	private String imagePath;
 	private String name;
 	private String description;
 	private Double price;
 	
-	public String getObjId() {
+	public Integer getObjId() {
 		return objId;
 	}
-	public void setObjId(String objId) {
+	public void setObjId(Integer objId) {
 		this.objId = objId;
 	}
 	public String getImagePath() {
