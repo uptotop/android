@@ -145,12 +145,12 @@ public class UpToTopMainActivity extends BaseActivity implements SurfaceHolder.C
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.main);
 		createDB();
+		File tmbFolder = new File( Environment.getExternalStorageDirectory(), TMB_DIR );
+        if ( !tmbFolder.exists() ){
+        	tmbFolder.mkdirs();	
+        }
 		if ( userCursor.getCount() > 0 && getUser().isShowStartup() ){
 			showLoginForm();
-		}
-		File tmbDir = new File (TMB_DIR);
-		if ( !tmbDir.exists() ){
-			tmbDir.mkdir();
 		}
 		this.srfView = ( SurfaceView ) findViewById( R.id.surfaceViewId );
 		this.srfHolder = srfView.getHolder();

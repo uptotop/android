@@ -3,13 +3,23 @@
  */
 package com.project.uptotop.activity;
 
+import java.io.IOException;
+import java.util.List;
+
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +27,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.uptotop.CalcConstants;
@@ -45,6 +56,7 @@ public class UserProfileActivity extends BaseActivity implements
 	private EditText userPassword;
 	private EditText userConfirmPassword;
 	private EditText userLocation;
+	private TextView phoneTextView;
 	
 	private String oldPassword;
 
@@ -54,6 +66,21 @@ public class UserProfileActivity extends BaseActivity implements
 	private Bitmap bitmap;
 	
 	private Integer userId = null;
+	
+	private LocationListener locationListener = new LocationListener() {
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
+		@Override
+		public void onProviderEnabled(String provider) {
+		}
+		@Override
+		public void onProviderDisabled(String provider) {
+		}
+		@Override
+		public void onLocationChanged(Location location) {
+		}
+	}; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +92,12 @@ public class UserProfileActivity extends BaseActivity implements
 		
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		densityDPI = metrics.densityDpi;
+		
+		LocationManager locationManager = ( LocationManager ) getSystemService( Context.LOCATION_SERVICE );
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0, locationListener);
+		Location loc = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER );
+		
+		Geocoder geocoder = new Geocoder( getApplicationContext() );
 
 		avatar = (ImageView) findViewById(R.id.avatarImageId);
 		cancelBtn = (Button) findViewById(R.id.userProfileCancelId);
@@ -77,13 +110,35 @@ public class UserProfileActivity extends BaseActivity implements
 		userPassword = (EditText) findViewById( R.id.newPasswordId );
 		userLocation = (EditText) findViewById( R.id.locationId);
 		
+		phoneTextView = (TextView) findViewById ( R.id.phoneTextId );
+		
+		setOwnPhoneNumber();
+		
 		isUserExist();
+		if ( loc == null ){
+			Toast.makeText(getApplicationContext(), R.string.gps_disable, Toast.LENGTH_LONG ).show();
+		}
+		if ( loc != null && userLocation.getText().toString().trim().length() == 0 ){
+			List<Address> addresses = null;
+			try {
+				addresses = geocoder.getFromLocation(loc.getLatitude(),loc.getLongitude(), 1);
+				userLocation.setText(addresses.get(0).getCountryName()
+									+", "+addresses.get(0).getAdminArea()+", "
+									+addresses.get(0).getLocality());
+			} catch (IOException e) {
+				Toast.makeText(getApplicationContext(), R.string.gps_disable, Toast.LENGTH_LONG ).show();
+			}
+			
+		}
 		
 		cancelBtn.setOnClickListener(this);
 		saveBtn.setOnClickListener(this);
 		avatar.setOnClickListener(this);
-		
-
+	}
+	
+	private void setOwnPhoneNumber(){
+		TelephonyManager mTelephonyMgr  = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE); 
+		phoneTextView.setText( mTelephonyMgr.getSimSerialNumber() );
 	}
 	
 	private void isUserExist(){
@@ -204,6 +259,9 @@ public class UserProfileActivity extends BaseActivity implements
 	}
 	
 	private void setAvatar(){
+		if ( avatarPath == null ){
+			return;
+		}
 		Bitmap decodedBmp = AppUtils.decodeScaledBitmapFromSdCard( avatarPath,AVATAR_WIDTH,AVATAR_HEIGHT,densityDPI ); 
         Bitmap scaledBmp = decodedBmp;
         if ( decodedBmp.getWidth() >=  decodedBmp.getHeight() ){

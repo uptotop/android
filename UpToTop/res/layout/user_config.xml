@@ -45,6 +45,12 @@
 
     <TextView
         style="@style/.labels"
+        android:id="@+id/phoneTextId"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="@string/user_name" />
+    <TextView
+        style="@style/.labels"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:text="@string/user_name" />
